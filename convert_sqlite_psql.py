@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 
-import sys
-import sqlparse
+import random
 import re
+import sqlparse
+import string
+import sys
 
 def process_sql_dump(sql_content):
     # Parse the SQL content
@@ -64,9 +66,10 @@ def process_sql_dump(sql_content):
                         ref_table = match.group(2).strip()
                         ref_column = match.group(3).strip()
                         # Create ALTER TABLE statement
+                        rnd_str = ''.join(random.choices(string.ascii_uppercase + string.digits, k=4))
                         fk_stmt = (
                             f'ALTER TABLE ONLY {table_name} '
-                            f'ADD CONSTRAINT fk_{table_name}_{column} '
+                            f'ADD CONSTRAINT fk_{table_name}_{column}_{rnd_str} '
                             f'FOREIGN KEY ({column}) '
                             f'REFERENCES {ref_table}({ref_column});'
                         )
